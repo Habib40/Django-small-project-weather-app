@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<br>
+<div class="container">
+    {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+            {{ error_message }}
+        </div>
+    {% elif api %}
+        <h1>Air Quality Index ({{ api.0.Category.Name }})</h1>
+        <div class="aqi">Current Area: {{ api.0.ReportingArea }}</div>
+        <div class="aqi">AQI Value: {{ api.0.AQI }}</div>
+        <div class="description">
+            {% if api.0.AQI <= 50 %}
+                Good - Air quality is considered satisfactory.
+            {% elif api.0.AQI <= 100 %}
+                Moderate - Air quality is acceptable.
+            {% elif api.0.AQI <= 150 %}
+                Unhealthy for Sensitive Groups.
+            {% elif api.0.AQI <= 200 %}
+                Unhealthy - Everyone may experience health effects.
+            {% elif api.0.AQI <= 300 %}
+                Very Unhealthy - Health alert for everyone.
+            {% else %}
+                Hazardous - Health warnings of emergency conditions.
+            {% endif %}
+        </div>
+    {% else %}
+        <p>Please enter a ZIP code to see the air quality data.</p>
+    {% endif %}
+</div>
+{% endblock %}
